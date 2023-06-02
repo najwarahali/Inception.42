@@ -1,0 +1,61 @@
+version: '3'
+services:
+  nginx:
+    image: nginx
+    build: ./requirements/nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    networks:
+      - my_net
+    volumes:
+      - Wp:/etc/wpdir
+  mariaDB:
+    image: mariadb
+    build:
+      context: ./requirements/mariadb
+      args:
+        - MYSQL_ROOT_PASSWORD=0000
+        - MYSQL_DATABASE=my_database
+        - MYSQL_USER=new_user
+        - MYSQL_PASSWORD=0000
+    container_name: mariadb
+    networks:
+      - my_net
+    volumes:
+      - Db:/var/lib/mysql
+  wordpress:
+    image: wordpress
+    build:
+      context: ./requirements/wordpress
+      args:
+        - WORDPRESS_DB_HOST=mariadb
+        - WORDPRESS_DB_USER=new_user
+        - WORDPRESS_DB_PASSWORD=0000
+        - WORDPRESS_DB_NAME=my_database
+    container_name: wordpress
+    env_file:
+      - .env
+    depends_on:
+      - mariaDB
+    networks:
+      - my_net
+    volumes:
+      - Wp:/etc/wpdir
+networks:
+  my_net:
+volumes:
+  Wp:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/nrahali/data/Wp_v'
+  Db:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/nrahali/data/Db_v'
