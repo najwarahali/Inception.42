@@ -30,11 +30,12 @@ Exploring System Administration with Docker .
     
     
  *  Difference between virtualization and containerization :
-Virtualization :  
+. Virtualization :  
 - Technology : One physical machine has multiple OSs residing on it and appears as multiple machines.
 - Start-up Time : Higher than containers .
 - Size : Larger.
-Containerization :
+
+. Containerization :
 - Technology : The application developed in a host environment with same OS and the same machine executes flawlessly on multiple different environments.
 -  Start-up Time : Less .
 - Size : Smaller .
